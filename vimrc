@@ -1,13 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Source: http://amix.dk/vim/vimrc.html
+" General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Mode dependent cursors for mintty
-let &t_ti.="\e[1 q"
-let &t_SI.="\e[5 q"
-let &t_EI.="\e[1 q"
-let &t_te.="\e[0 q"
+execute pathogen#infect()
 
 " Sets how many lines of history VIM has to remember
 set history=700
@@ -28,12 +22,12 @@ let maplocalleader = "\\"
 " Fast saving
 nmap <leader>w :w!<cr>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable mouse
-set mouse=a
+" Enable CTRL-P
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
@@ -59,7 +53,7 @@ set whichwrap+=<,>,h,l
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases
+" When searching try to be smart about cases 
 set smartcase
 
 " Highlight search results
@@ -75,9 +69,11 @@ set lazyredraw
 set magic
 
 " Show matching brackets when text indicator is over them
-set showmatch
+" set showmatch
+set noshowmatch
+hi MatchParen cterm=none ctermbg=none ctermfg=none
 " How many tenths of a second to blink when matching brackets
-set mat=2
+" set mat=2
 
 " No annoying sound on errors
 set noerrorbells
@@ -88,15 +84,18 @@ set tm=500
 " Display line numbers
 set number
 
+" Highlight trailing whitespace
+set list listchars=tab:»·,trail:·
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
+" Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable
 
-" Show a color column at 80 characters
-set colorcolumn=80
+" Highlight text over 80 characters
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -104,10 +103,9 @@ if has("gui_running")
     set guioptions+=e
     set t_Co=256
     set guitablabel=%M\ %t
-    set guifont=Consolas:h10:cANSI
 
-    colorscheme koehler
-    set background=dark
+    colorscheme solarized
+    set background=light
 endif
 
 " Set utf8 as standard encoding and en_US as the standard language
@@ -117,7 +115,7 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
+" Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
@@ -125,7 +123,7 @@ set nowb
 set noswapfile
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
+" Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
@@ -145,25 +143,26 @@ set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
 
+autocmd BufRead,BufNewFile *.html,*.json,*.css setlocal shiftwidth=2 tabstop=2
+
 """"""""""""""""""""""""""""""
-" => Visual mode related
+" Visual mode related
 """"""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
+" Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
 map k gk
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+" map <space> /
+" map <c-space> ?
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
@@ -193,7 +192,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers
+" Specify the behavior when switching between buffers 
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -207,11 +206,9 @@ autocmd BufReadPost *
      \ endif
 " Remember info about open buffers on close
 set viminfo^=%
-set viminfo+=n~/_viminfo
-
 
 """"""""""""""""""""""""""""""
-" => Status line
+" Status line
 """"""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
@@ -220,7 +217,7 @@ set laststatus=2
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
+" Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remap VIM 0 to first non-blank character
 map 0 ^
@@ -244,11 +241,11 @@ func! DeleteTrailingWS()
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
-autocmd BufWrite * :call DeleteTrailingWS()
-
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.coffee :call DeleteTrailingWS()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vimgrep searching and cope displaying
+" vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " When you press gv you vimgrep after the selected text
 vnoremap <silent> gv :call VisualSelection('gv')<CR>
@@ -278,9 +275,8 @@ map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
 map <leader>n :cn<cr>
 map <leader>p :cp<cr>
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
+" Spell checking
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
@@ -291,9 +287,8 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
+" Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -304,11 +299,8 @@ map <leader>q :e ~/buffer<cr>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
-" shortcut to edit .bashrc
-:nnoremap <leader>ep :vsplit ~/.bashrc<cr>
-
 " shortcut to edit .vimrc
-:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <leader>ev :tabe $MYVIMRC<cr>
 
 " shortcut to source .vimrc file
 :nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -320,7 +312,7 @@ nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 autocmd FileType cpp nnoremap <buffer> <localleader>c I//<esc>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
+" Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
@@ -412,3 +404,11 @@ function! ToggleDistractionFree()
     endif
 endfunction
 nnoremap <leader>df :call ToggleDistractionFree()<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Source a global configuration file if available
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if filereadable("/etc/vim/vimrc.local")
+  source /etc/vim/vimrc.local
+endif
+
