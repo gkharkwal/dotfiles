@@ -102,10 +102,6 @@ set list listchars=tab:»·,trail:·
 " Enable syntax highlighting
 syntax enable
 
-" Highlight text over 80 characters
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
-
 " Set extra options when running in GUI mode
 if has("gui_running")
     set guioptions-=T
@@ -116,6 +112,10 @@ if has("gui_running")
     colorscheme solarized
     set background=light
 endif
+
+" Highlight text over 80 characters
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%81v.\+/
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
