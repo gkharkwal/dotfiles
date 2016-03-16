@@ -5,7 +5,7 @@ cwd=$PWD
 dir=$(dirname $BASH_SOURCE)
 
 # Maintaining an explicit list for safety and sanity
-files="vimrc vim bashrc zshrc"
+files="vimrc vim bashrc zshrc exports bash_prompt functions"
 
 function copyDotfiles() {
     echo "Moving to {$dir}"
@@ -25,7 +25,7 @@ function copyDotfiles() {
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
     copyDotfiles;
 else
-    read -p "This will overwrite files in your home directory.\
+    read -p "This will overwrite files in your home directory. \
 Do you want to continue? (y/n) " -n 1;
     echo "";
     if [[ $REPLY =~ ^[Yy]$ ]]; then
