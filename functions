@@ -65,7 +65,7 @@ go() {
     if [ -z ${keyval} ]; then
         echo "unknown diralias '${alias}'"
     else
-        cd "${path}"
+        cd "${keyval}"
     fi
 }
 
