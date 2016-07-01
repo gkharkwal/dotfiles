@@ -8,8 +8,8 @@
 USE_GIT_PROMPT=false
 if [ "$USE_GIT_PROMPT" = true ] && [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
     GIT_PS1_SHOWDIRTYSTATE=true
-    export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\t \[\e[33m\]\w$(__git_ps1)\[\e[0m\] \[\e[35m\][\j]\[\e[0m\] \[\e[1;36m\]\$\[\e[0m\] '
+    export PS1='\[\e]0;\w\a\]\[\e[32m\]\t \[\e[33m\]\w$(__git_ps1)\[\e[0m\] \[\e[35m\][\j]\[\e[0m\] \[\e[1;36m\]\$\[\e[0m\] '
 else
-    export PS1='\[\e]0;\w\a\]\n\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\] \[\e[35m\][\j]\[\e[0m\] \[\e[1;36m\]\$\[\e[0m\] '
+    export PS1='\[\e]0;\w\a\]\[\e[32m\]\h \[\e[33m\]\w\[\e[0m\] \[\e[35m\][\j]\[\e[0m\] \[\e[1;36m\]\$\[\e[0m\] '
 fi
 
