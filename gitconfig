@@ -3,3 +3,4 @@
 	co = checkout
 	br = branch
 	fall = fetch --all --prune
+    fmerge = merge --ff-only
