@@ -54,9 +54,9 @@ cyan="\e[36m"; light_cyan="\e[1;36m";
 white="\e[37m"; light_gray="\e[1;37m";
 
 # MacOS specific.
-if [ -s "/usr/local/etc/bash_completion.d/git-prompt.sh" ]; then
-  source "/usr/local/etc/bash_completion.d/git-prompt.sh"
-fi
+GIT_CORE_PATH='/usr/local/etc/bash_completion.d'
+[[ "${GIT_CORE_PATH}/git-completion.bash" ]] && source "${GIT_CORE_PATH}/git-completion.bash"
+[[ "${GIT_CORE_PATH}/git-prompt.sh" ]] && source "${GIT_CORE_PATH}/git-prompt.sh"
 
 if [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
   GIT_PS1_SHOWDIRTYSTATE=true
