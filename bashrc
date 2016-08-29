@@ -1,13 +1,23 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
+# Load the shell dotfiles, and then some:
+# ~/.localrc can be used for other settings you don’t want to commit.
+for file in ~/.{functions,exports,aliases,localrc}; do
+        [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+# Add bin to path
+pathprepend ~/bin
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -20,14 +30,6 @@ shopt -s histappend;
 
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell;
-
-# Load the shell dotfiles, and then some:
-# * ~/.path can be used to extend `$PATH`.
-# * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{exports,functions,path,aliases,extra}; do
-        [ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
 
 ## ######################## ##
 ## BASH PROMPT              ##
@@ -54,12 +56,8 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # Mac specific
-if [ -s /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
-    source /usr/local/etc/bash_completion.d/git-prompt.sh
-fi
-
-if [ -s /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
-    source /usr/local/etc/bash_completion.d/git-prompt.sh
+if [ -s "/usr/local/etc/bash_completion.d/git-prompt.sh" ]; then
+    source "/usr/local/etc/bash_completion.d/git-prompt.sh"
 fi
 
 # uncomment for git prompt, if the terminal has the capability; turned off
@@ -74,6 +72,8 @@ if [ -n "$use_git_prompt" ]; then
     use_git_prompt=
   fi
 fi
+
+
 
 # Guide:
 #   \[\e]0;\w\a\] - This sets the window title to match the current working
@@ -104,3 +104,4 @@ xterm*|rxvt*)
 *)
   ;;
 esac
+

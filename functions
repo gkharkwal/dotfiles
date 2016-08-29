@@ -1,4 +1,4 @@
-diralias() {
+function diralias() {
     # determine where the aliases are
     if [ -z "${DIRALIAS}" ]; then
         export DIRALIAS="${HOME}/.diraliases"
@@ -34,12 +34,12 @@ diralias() {
         echo "Added alias '${alias}' for '${path}'"
     elif [ -n "${key}" ]; then
         echo "diralias is ${key}"
-    else 
+    else
         echo "unknown alias ${alias}"
     fi
 }
 
-go() {
+function go() {
     # validation check
     if [[ $# < 1 ]]; then
         echo "usage: diralias <alias>"
@@ -69,7 +69,7 @@ go() {
     fi
 }
 
-pathappend() {
+function pathappend() {
   for ARG in "$@"
   do
     if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
@@ -78,7 +78,7 @@ pathappend() {
   done
 }
 
-pathprepend() {
+function pathprepend() {
   for ARG in "$@"
   do
     if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then

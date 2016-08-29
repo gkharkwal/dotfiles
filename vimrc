@@ -92,6 +92,7 @@ set tm=500
 
 " Display line numbers
 set number
+set relativenumber
 
 " Highlight trailing whitespace
 set list listchars=tab:»·,trail:·
@@ -123,7 +124,6 @@ set ffs=unix,dos,mac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
@@ -137,9 +137,9 @@ set expandtab
 " Be smart when using tabs ;)
 set smarttab
 
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+" 1 tab == 2 spaces
+set shiftwidth=2
+set tabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -148,8 +148,6 @@ set tw=500
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
-
-autocmd BufRead,BufNewFile *.html,*.json,*.css setlocal shiftwidth=2 tabstop=2
 
 """"""""""""""""""""""""""""""
 " Visual mode related
@@ -385,7 +383,8 @@ function! ToggleDistractionFree()
         set noshowcmd
         set noruler
         set laststatus=0
-        set nonu
+        set nonumber
+        set norelativenumber
         set showtabline=0
         if has("gui_running")
             set guioptions-=m "remove menu bar
@@ -399,6 +398,7 @@ function! ToggleDistractionFree()
         set ruler
         set laststatus=2
         set number
+        set relativenumber
         set showtabline=2
         if has("gui_running")
             set guioptions+=e "add tab line

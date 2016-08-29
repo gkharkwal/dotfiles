@@ -6,17 +6,17 @@ $if Bash
   # set bell-style visible
 
   # Show all instead of beeping first
-  set show-all-if-ambiguous off
+  set show-all-if-ambiguous on
 
   # Filename completion/expansion
   set completion-ignore-case on
 
   # Expand homedir name
-  set expand-tilde on
+  set expand-tilde off
 
   # Append "/" to all dirnames
-  # set mark-directories on
-  # set mark-symlinked-directories on
+  set mark-directories on
+  set mark-symlinked-directories on
 
   # visible-stats
   # Append a mark according to the file type in a listing

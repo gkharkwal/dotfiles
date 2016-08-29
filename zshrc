@@ -3,6 +3,12 @@ if [ -f ~/.profile ]; then
     . ~/.profile
 fi
 
+# Load personal stuff
+for file in ~/.{functions,exports,aliases,localrc}; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done
+unset file
+
 # Path to your oh-my-zsh installation.
 export ZSH=# update path here!
 
@@ -30,8 +36,14 @@ zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+if whence dircolors >/dev/null; then
+  eval "$(dircolors -b)"
+  zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+  alias ls='ls --color'
+else
+  export CLICOLOR=1
+  zstyle ':completion:*:default' list-colors ''
+fi
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
@@ -42,11 +54,4 @@ zstyle ':completion:*' verbose true
 
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-
-# Load personal stuff
-for file in ~/.{functions,exports,aliases,path,extra}; do
-  [ -r "$file" ] && [ -f "$file" ] && source "$file";
-done
-unset file
-
 
