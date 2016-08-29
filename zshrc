@@ -9,6 +9,9 @@ for file in ~/.{functions,exports,aliases,localrc}; do
 done
 unset file
 
+# Add bin to front of PATH
+pathprepend ~/bin
+
 # Path to your oh-my-zsh installation.
 export ZSH=# update path here!
 
