@@ -6,7 +6,7 @@ $if Bash
   # set bell-style visible
 
   # Show all instead of beeping first
-  set show-all-if-ambiguous on
+  set show-all-if-ambiguous off
 
   # Filename completion/expansion
   set completion-ignore-case on
