@@ -17,7 +17,7 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-shopt -s globstar
+# shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -35,66 +35,49 @@ shopt -s cdspell;
 ## BASH PROMPT              ##
 ## ######################## ##
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-  xterm-color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
-if [ -n "$force_color_prompt" ]; then
-  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-  # We have color support; assume it's compliant with Ecma-48
-  # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+if [ ! -x /usr/bin/tput ] || ! tput setaf 1 >&/dev/null; then
+  # We lack color support;
+  # (Lack of such support is extremely rare, and such
   # a case would tend to support setf rather than setaf.)
-  color_prompt=yes
-  else
-  color_prompt=
-  fi
+  return
 fi
 
-# Mac specific
+# define colors
+reset="\e[0m";
+black="\e[30m"; dark_gray="\e[1;30m";
+red="\e[31m"; light_red="\e[1;31m";
+green="\e[32m"; light_green="\e[1;32m";
+brown="\e[33m"; yellow="\e[1;33m";
+blue="\e[34m"; light_blue="\e[1;34m";
+purple="\e[35m"; light_purple="\e[1;35m";
+cyan="\e[36m"; light_cyan="\e[1;36m";
+white="\e[37m"; light_gray="\e[1;37m";
+
+# MacOS specific.
 if [ -s "/usr/local/etc/bash_completion.d/git-prompt.sh" ]; then
-    source "/usr/local/etc/bash_completion.d/git-prompt.sh"
+  source "/usr/local/etc/bash_completion.d/git-prompt.sh"
 fi
 
-# uncomment for git prompt, if the terminal has the capability; turned off
-# by default to not distract the user.
-use_git_prompt=yes
-if [ -n "$use_git_prompt" ]; then
-  if [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
-  # check if git prompt can actually be shown
-    GIT_PS1_SHOWDIRTYSTATE=true
-    use_git_prompt=yes
-  else
-    use_git_prompt=
-  fi
-fi
-
-
-
-# Guide:
-#   \[\e]0;\w\a\] - This sets the window title to match the current working
-#           directory, and use an alert. The \[ and \] denote non-printing
-#           characters to avoid line counting issues.
-#
-# CAUTION: new line in PS1 can cause issues with __git_ps1, use at own risk.
-if [ "$color_prompt" = yes ]; then
-  if [ "$use_git_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\e[32m\]\h \[\e[33m\]\W$(__git_ps1)\[\e[0m\] \[\e[35m\][\j]\[\e[0m\] \$ '
-  else
-    PS1='${debian_chroot:+($debian_chroot)}\[\e[32m\]\h \[\e[33m\]\W\[\e[0m\] \[\e[35m\][\j]\[\e[0m\] \$ '
-  fi
+if [ -n "$(type -t __git_ps1)" ] && [ "$(type -t __git_ps1)" = function ]; then
+  GIT_PS1_SHOWDIRTYSTATE=true
+  has_git_prompt=yes
 else
-  if [ "$use_git_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\h \W$(__git_ps1) [\j] \$ '
-  else
-    PS1='${debian_chroot:+($debian_chroot)}\h \W [\j] \$ '
-  fi
+  GIT_PS1_SHOWDIRTYSTATE=
+  has_git_prompt=
 fi
-unset color_prompt force_color_prompt use_git_prompt
+
+PS1="${debian_chroot:+($debian_chroot)}"
+PS1+="\[${green}\]\h "
+PS1+="\[${brown}\]\w"
+if [ -n "$has_git_prompt" ]; then
+  # The use of single-quotes is mandatory.
+  PS1+='$(__git_ps1) '
+else
+  PS1+=" "
+fi
+PS1+="\[${purple}\][\j]"
+PS1+="\n"
+PS1+="\[${white}\]\$ \[${reset}\]"
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -105,3 +88,14 @@ xterm*|rxvt*)
   ;;
 esac
 
+# forget colors
+unset reset
+unset black dark_gray
+unset black dark_gray
+unset red light_red
+unset green light_green
+unset brown yellow
+unset blue light_blue
+unset purple light_purple
+unset cyan light_cyan
+unset white light_gray
