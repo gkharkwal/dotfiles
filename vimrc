@@ -1,6 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable modern vim features
+set nocompatible
+
 execute pathogen#infect()
 
 " Sets how many lines of history VIM has to remember
@@ -24,6 +27,7 @@ nmap <leader>w :w!<cr>
 
 " Enable CTRL-P
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_working_path_mode = 0 " default to current directory as root
 
 " Mode dependent cursors for mintty
 let &t_ti.="\e[1 q"
@@ -78,8 +82,8 @@ set lazyredraw
 set magic
 
 " Show matching brackets when text indicator is over them
-" set showmatch
-set noshowmatch
+set showmatch
+" set noshowmatch
 hi MatchParen cterm=none ctermbg=none ctermfg=none
 " How many tenths of a second to blink when matching brackets
 " set mat=2
@@ -105,18 +109,26 @@ syntax enable
 
 " Set extra options when running in GUI mode
 if has("gui_running")
-    set guioptions-=T
-    set guioptions+=e
-    set t_Co=256
-    set guitablabel=%M\ %t
+  set guioptions-=T
+  set guioptions+=e
+  set t_Co=256
+  " set guitablabel=%M\ %t
 
-    colorscheme solarized
-    set background=light
+  colorscheme solarized
+  set background=dark
+else
+  colorscheme elflord
+  set background=dark
 endif
 
 " Highlight text over 80 characters
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%81v.\+/
+" highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+" match OverLength /\%101v.\+/
+augroup vimrc_autocmds
+  autocmd BufNewFile,BufEnter * highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+  autocmd BufNewFile,BufEnter *.h,*.cc,*.js,*.go,*.grammar,*.proto match OverLength /\%81v.*/
+  autocmd BufNewFile,BufEnter *.java match OverLength /\%101v.*/
+augroup END
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -124,6 +136,7 @@ set ffs=unix,dos,mac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
@@ -147,7 +160,9 @@ set tw=500
 
 set ai "Auto indent
 set si "Smart indent
-set wrap "Wrap lines
+set nowrap "Don't wrap lines
+
+autocmd BufRead,BufNewFile *.html,*.json,*.css setlocal shiftwidth=2 tabstop=2
 
 """"""""""""""""""""""""""""""
 " Visual mode related
@@ -160,13 +175,21 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Tab navigation like Chrome.
+nnoremap <C-S-tab> :tabprevious<CR>
+nnoremap <C-tab>   :tabnext<CR>
+nnoremap <C-t>     :tabnew<CR>
+inoremap <C-S-tab> <Esc>:tabprevious<CR>i
+inoremap <C-tab>   <Esc>:tabnext<CR>i
+inoremap <C-t>     <Esc>:tabnew<CR>
+
 " Treat long lines as break lines (useful when moving around in them)
 noremap j gj
 noremap k gk
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-noremap <space> /
-noremap <c-space> ?
+" noremap <space> /
+" noremap <C-space> ?
 
 " Disable highlight when <leader><cr> is pressed
 noremap <silent> <leader><cr> :noh<cr>
@@ -223,14 +246,17 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Shortcut for 'default' macro register
+nnoremap <space> @q
+
 " Remap VIM 0 to first non-blank character
 noremap 0 ^
 
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+nnoremap <M-j> mz:m+<cr>`z
+nnoremap <M-k> mz:m-2<cr>`z
+vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
   nmap <D-j> <M-j>
@@ -239,7 +265,7 @@ if has("mac") || has("macunix")
   vmap <D-k> <M-k>
 endif
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+" Delete trailing white space on save, useful for Python and CoffeeScript
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
@@ -273,10 +299,10 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 " To go to the previous search results do:
 "   <leader>p
 "
-noremap <leader>cc :botright cope<cr>
-noremap <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-noremap <leader>n :cn<cr>
-noremap <leader>p :cp<cr>
+" noremap <leader>cc :botright cope<cr>
+" noremap <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+" noremap <leader>n :cn<cr>
+" noremap <leader>p :cp<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Spell checking
@@ -343,7 +369,6 @@ function! VisualSelection(direction) range
     let @/ = l:pattern
     let @" = l:saved_reg
 endfunction
-
 
 " Returns true if paste mode is enabled
 function! HasPaste()
