@@ -44,14 +44,14 @@ fi
 
 # define colors
 reset="\e[0m";
-black="\e[30m"; dark_gray="\e[1;30m";
-red="\e[31m"; light_red="\e[1;31m";
-green="\e[32m"; light_green="\e[1;32m";
-brown="\e[33m"; yellow="\e[1;33m";
-blue="\e[34m"; light_blue="\e[1;34m";
-purple="\e[35m"; light_purple="\e[1;35m";
-cyan="\e[36m"; light_cyan="\e[1;36m";
-white="\e[37m"; light_gray="\e[1;37m";
+black="\e[30m"; bold_black="\e[1;30m";
+red="\e[31m"; bold_red="\e[1;31m";
+green="\e[32m"; bold_green="\e[1;32m";
+yellow="\e[33m"; bold_yellow="\e[1;33m";
+blue="\e[34m"; bold_blue="\e[1;34m";
+purple="\e[35m"; bold_purple="\e[1;35m";
+cyan="\e[36m"; bold_cyan="\e[1;36m";
+white="\e[37m"; bold_white="\e[1;37m";
 
 # MacOS specific.
 GIT_CORE_PATH='/usr/local/etc/bash_completion.d'
@@ -67,17 +67,17 @@ else
 fi
 
 PS1="${debian_chroot:+($debian_chroot)}"
-PS1+="\[${green}\]\h "
-PS1+="\[${brown}\]\w"
+PS1+="\[${red}\]\h "
+PS1+="\[${green}\]\w"
 if [ -n "$has_git_prompt" ]; then
   # The use of single-quotes is mandatory.
   PS1+='$(__git_ps1) '
 else
   PS1+=" "
 fi
-PS1+="\[${purple}\][\j]"
+PS1+="\[${blue}\][\j]"
 PS1+="\n"
-PS1+="\[${white}\]\$ \[${reset}\]"
+PS1+="\[${bold_yellow}\]\$ \[${reset}\]"
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -90,13 +90,12 @@ esac
 
 # forget colors
 unset reset
-unset black dark_gray
-unset black dark_gray
-unset red light_red
-unset green light_green
-unset brown yellow
-unset blue light_blue
-unset purple light_purple
-unset cyan light_cyan
-unset white light_gray
+unset black bold_black
+unset red bold_red
+unset green bold_green
+unset yellow bold_yellow
+unset blue bold_blue
+unset purple bold_purple
+unset cyan bold_cyan
+unset white bold_white
 
