@@ -133,6 +133,13 @@ augroup END
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
+" Fix colour of gutter
+highlight clear SignColumn
+highlight DiffAdd    ctermfg=black ctermbg=green
+highlight DiffChange ctermfg=black ctermbg=yellow
+highlight DiffDelete ctermfg=black ctermbg=red
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
