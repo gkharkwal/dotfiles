@@ -6,6 +6,7 @@ PATH=$PATH:/Users/kharkwal/repos/git-scripts
 ## --------
 # Aliases
 ## --------
+alias ls='ls -GF'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
