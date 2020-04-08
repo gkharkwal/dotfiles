@@ -3,13 +3,7 @@
 
 # Load the shell dotfiles, and then some:
 # ~/.localrc can be used for other settings you don’t want to commit.
-for file in ~/.{functions,exports,aliases,localrc}; do
-        [ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
-
-# Add bin to path
-pathprepend ~/bin
+[ -r "~/.localrc" ] && source "~/.localrc";
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -30,6 +24,145 @@ shopt -s histappend;
 
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell;
+
+## ######################## ##
+## FUNCTIONS                ##
+## ######################## ##
+function diralias() {
+    # determine where the aliases are
+    if [ -z "${DIRALIAS}" ]; then
+        export DIRALIAS="${HOME}/.diraliases"
+    fi
+
+    if [ ! -f "$DIRALIAS" ]; then
+        touch "${DIRALIAS}"
+    fi
+
+    alias=
+    path=
+    if [[ $# == 0 ]]; then
+        cat "${DIRALIAS}" | sort
+        return
+    elif [[ $# == 1 ]]; then
+        alias=$1
+    else
+        alias=$1
+        path=$2
+    fi
+
+    # check if aliases file already exists
+    key=$(grep "^${alias}=" ${DIRALIAS})
+    if [ -n "${path}" ] && [ -n "${key}" ]; then
+        # replace value -- using semicolon as delim to avoid
+        # conflicts with /
+        sed -i.bak -r "s;(${alias}=).*;\1${path};" ${DIRALIAS}
+        rm -f "${DIRALIAS}.bak"
+        echo "Replaced alias '${alias}' for '${path}'"
+    elif [ -n "${path}" ]; then
+        # add new value
+        echo "${alias}=${path}" >> ${DIRALIAS}
+        echo "Added alias '${alias}' for '${path}'"
+    elif [ -n "${key}" ]; then
+        echo "diralias is ${key}"
+    else
+        echo "unknown alias ${alias}"
+    fi
+}
+
+function go() {
+    # validation check
+    if [[ $# < 1 ]]; then
+        echo "usage: diralias <alias>"
+        return
+    fi
+
+    alias=$1
+
+    # determine where the aliases are
+    if [ -z "${DIRALIAS}" ]; then
+        export DIRALIAS="${HOME}/.diraliases"
+    fi
+
+    # check if aliases file already exists
+    keyval=
+    if [ ! -f "$DIRALIAS" ]; then
+        echo "unknown diralias '${alias}'"
+    else
+        # check if key already exists
+        keyval=$(grep "^${alias}=" ${DIRALIAS} | cut -d"=" -f2)
+    fi
+
+    if [ -z ${keyval} ]; then
+        echo "unknown diralias '${alias}'"
+    else
+        cd "${keyval}"
+    fi
+}
+
+function pathappend() {
+  for ARG in "$@"
+  do
+    if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
+        PATH="${PATH:+"$PATH:"}$ARG"
+    fi
+  done
+}
+
+function pathprepend() {
+  for ARG in "$@"
+  do
+    if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
+        PATH="$ARG${PATH:+":$PATH"}"
+    fi
+  done
+}
+
+## ######################## ##
+## EXPORTS                  ##
+## ######################## ##
+# Add bin to path
+pathprepend ~/bin
+
+# Reset size of history
+export HISTSIZE=50000
+export HISTFILESIZE=50000
+
+# Don't put duplicate lines in the history.
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups:erasedups
+
+# Ignore some controlling instructions
+# HISTIGNORE is a colon-delimited list of patterns which should be excluded.
+# The '&' is a special pattern which suppresses duplicate entries.
+# export HISTIGNORE=$'[ \t]*:&:[fb]g:exit'
+export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls' # Ignore the ls command as well
+
+# Make vim the default editor.
+export EDITOR='vim';
+
+## ######################## ##
+## ALIASES                  ##
+## ######################## ##
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# laziness
+alias md='mkdir'
+alias v='vim'
+alias tls='tmux list-sessions'
 
 ## ######################## ##
 ## BASH PROMPT              ##
