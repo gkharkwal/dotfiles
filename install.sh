@@ -5,7 +5,7 @@ cwd=$PWD
 dir=$(dirname $BASH_SOURCE)
 
 # Maintaining an explicit list for safety and sanity
-files="vimrc vim bashrc zshrc exports bash_prompt functions"
+files="vimrc vim bashrc zshrc"
 
 function copyDotfiles() {
     echo "Moving to {$dir}"
