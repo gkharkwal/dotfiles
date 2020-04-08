@@ -220,4 +220,4 @@ shopt -s cdspell;
 
 # Load the shell dotfiles, and then some:
 # ~/.localrc can be used for other settings you don’t want to commit.
-[ -r "~/.localrc" ] && source "~/.localrc";
+[ -f ~/.localrc ] && source ~/.localrc;
