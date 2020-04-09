@@ -4,7 +4,7 @@ unsetopt BEEP
 ## --------
 # Exports
 ## --------
-PATH=$PATH:/Users/kharkwal/repos/git-scripts
+PATH=~/bin:$PATH
 
 ## --------
 # Aliases
@@ -28,15 +28,15 @@ bindkey "^N" down-line-or-search
 ## ---------
 # History
 ## ---------
-# More storage.
+# More storage
 HISTSIZE=100000
 HISTFILESIZE=100000
 HISTFILE=~/.zhistory
 
-# Ignore dups.
+# Ignore dups
 setopt HIST_IGNORE_ALL_DUPS
 
-# Share history.
+# Share history
 setopt inc_append_history
 setopt share_history
 
@@ -46,3 +46,7 @@ setopt share_history
 NEWLINE=$'\n'
 PROMPT="%F{green}%m%f %F{yellow}%~%f %F{magenta}[%j]%f${NEWLINE}%# "
 
+## -------
+# Localrc
+## -------
+[ -f ~/.localrc ] && source ~/.localrc
