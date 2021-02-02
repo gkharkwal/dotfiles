@@ -45,10 +45,25 @@ setopt inc_append_history
 setopt share_history
 
 ## -------
+# Git autocompletions
+## -------
+autoload -Uz compinit && compinit
+
+## -------
+# Git prompt
+## --------
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+
+zstyle ':vcs_info:git:*' formats '%b'
+
+## -------
 # Prompt
 ## -------
 NEWLINE=$'\n'
-PROMPT="%F{green}%m%f %F{yellow}%~%f %F{magenta}[%j]%f${NEWLINE}%# "
+PROMPT="%F{green}%m%f %F{yellow}%~%f %F{blue}\$vcs_info_msg_0_%f %F{magenta}[%j]%f${NEWLINE}%# "
 
 ## -------
 # Localrc
