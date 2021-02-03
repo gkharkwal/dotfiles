@@ -1,6 +1,13 @@
+[user]
+  email = gaurav.kharkwal@gmail.com
+  name = Gaurav Kharkwal
 [alias]
   st = status
   co = checkout
   br = branch
   fall = fetch --all --prune
   fmerge = merge --ff-only
+[pull]
+  ff = only
+[push]
+  default = simple
