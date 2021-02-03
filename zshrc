@@ -25,6 +25,13 @@ alias md='mkdir'
 alias v='vim'
 alias tls='tmux list-sessions'
 
+## --------
+# Functions
+## --------
+function tmx () {
+  tmux new -A -s ${1:-default}
+}
+
 ## ----------
 # Shortcuts
 ## ----------
