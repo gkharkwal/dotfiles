@@ -19,6 +19,8 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # laziness
+alias ..="cd .."
+alias ...="cd ../.."
 alias md='mkdir'
 alias v='vim'
 alias tls='tmux list-sessions'
@@ -26,8 +28,10 @@ alias tls='tmux list-sessions'
 ## ----------
 # Shortcuts
 ## ----------
-bindkey "^P" up-line-or-search
-bindkey "^N" down-line-or-search
+bindkey "^[[A" history-beginning-search-backward
+bindkey "^P" history-beginning-search-backward
+bindkey "^[[B" history-beginning-search-forward
+bindkey "^N" history-beginning-search-forward
 
 ## ---------
 # History
