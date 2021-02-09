@@ -4,8 +4,6 @@
 " Enable modern vim features
 set nocompatible
 
-execute pathogen#infect()
-
 " Sets how many lines of history VIM has to remember
 set history=700
 
@@ -25,15 +23,11 @@ let maplocalleader = "\\"
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" Enable CTRL-P
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-let g:ctrlp_working_path_mode = 0 " default to current directory as root
+" Default ctrlp to current dir as root
+let g:ctrlp_working_path_mode = 0
 
-" Mode dependent cursors for mintty
-let &t_ti.="\e[1 q"
-let &t_SI.="\e[5 q"
-let &t_EI.="\e[1 q"
-let &t_te.="\e[0 q"
+" Update faster for vim-gitgutter
+set updatetime=100
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VIM user interface
