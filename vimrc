@@ -1,4 +1,29 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Specify where the plugins will live
+call plug#begin('~/.vim/plugged')
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'airblade/vim-gitgutter'
+
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+  augroup nerd_loader
+    autocmd!
+    autocmd VimEnter * silent! autocmd! FileExplorer
+    autocmd BufEnter,BufNew *
+          \  if isdirectory(expand('<amatch>'))
+          \|   call plug#load('nerdtree')
+          \|   execute 'autocmd! nerd_loader'
+          \| endif
+  augroup END
+
+" Initialize plugin system
+call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable modern vim features
@@ -172,6 +197,9 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+" <leader>n | NERD Tree
+nnoremap <leader>n :NERDTreeToggle<cr>
+
 """"""""""""""""""""""""""""""
 " Status line
 """"""""""""""""""""""""""""""
@@ -186,6 +214,7 @@ set laststatus=2
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Shortcut for 'default' macro register
 nnoremap <space> @q
+nnoremap Q @q
 
 " Delete trailing white space, useful for Python and CoffeeScript
 func! DeleteTrailingWS()
@@ -256,6 +285,14 @@ function! ToggleDistractionFree()
     endif
 endfunction
 nnoremap <leader>df :call ToggleDistractionFree()<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FZF
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let $FZF_DEFAULT_OPTS .= ' --inline-info'
+
+nnoremap <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+noremap <expr> <C-p> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Source a global configuration file if available
