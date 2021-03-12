@@ -20,6 +20,8 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
           \| endif
   augroup END
 
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
 " Initialize plugin system
 call plug#end()
 
@@ -115,8 +117,7 @@ set list listchars=tab:»·,trail:·
 " Enable syntax highlighting
 syntax enable
 
-colorscheme elflord
-set background=dark
+set background=light
 
 " Highlight text longer than limit
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
@@ -293,6 +294,13 @@ let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
 nnoremap <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
 noremap <expr> <C-p> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" YCM
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>gd :YcmCompleter GoTo<CR>
+nnoremap <leader>gr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>gi :YcmCompleter GoToImplementation<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Source a global configuration file if available

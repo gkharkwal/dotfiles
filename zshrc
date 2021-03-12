@@ -26,10 +26,9 @@ alias v='vim'
 alias tls='tmux list-sessions'
 
 # git
+alias g='git'
 alias gs='git status'
 alias gf='git fetch --all'
-alias ga='git add .'
-alias gc='git commit'
 alias gd='git diff'
 alias gl='git log --abbrev-commit --graph'
 
