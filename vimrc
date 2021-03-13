@@ -4,11 +4,17 @@
 " Specify where the plugins will live
 call plug#begin('~/.vim/plugged')
 
+" Fuzzy finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+" Show git status on gutter
 Plug 'airblade/vim-gitgutter'
 
+" Better status line
+Plug 'vim-airline/vim-airline'
+
+" Directory tree
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   augroup nerd_loader
     autocmd!
@@ -20,6 +26,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
           \| endif
   augroup END
 
+" Auto-complete
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 
 " Initialize plugin system
@@ -117,7 +124,7 @@ set list listchars=tab:»·,trail:·
 " Enable syntax highlighting
 syntax enable
 
-set background=light
+set background=dark
 
 " Highlight text longer than limit
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
@@ -174,6 +181,9 @@ autocmd BufRead,BufNewFile *.html,*.json,*.css setlocal shiftwidth=2 tabstop=2
 noremap j gj
 noremap k gk
 
+" Yank until end of line
+noremap Y y$
+
 " Remap VIM 0 to first non-blank character
 noremap 0 ^
 
@@ -205,10 +215,19 @@ nnoremap <leader>n :NERDTreeToggle<cr>
 " Status line
 """"""""""""""""""""""""""""""
 " Always show the status line
-set laststatus=2
+" set laststatus=2
 
 " Format the status line
-:set statusline=%{HasPaste()}%<%F\ %h%m%r%{getcwd()}%=%-14.(%l,%c%V%)\ %P
+" set statusline=%{HasPaste()} " paste status
+" set statusline+=[%{getcwd()}] " working directory
+" set statusline+=[%f] " full path to file
+" set statusline+=%m " modified?
+" set statusline+=%r " read only?
+" set statusline+=%= " right align
+" set statusline+=%y " file type
+" set statusline+=[%P] " percentage through file
+" set statusline+=[%l:%c] " line number : column number
+" set statusline+=[%{mode()}] " current mode
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Editing mappings
