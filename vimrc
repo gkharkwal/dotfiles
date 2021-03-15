@@ -84,6 +84,10 @@ set ruler
 " A buffer becomes hidden when it is abandoned
 set hidden
 
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
 " Ignore case when searching
 set ignorecase
 
