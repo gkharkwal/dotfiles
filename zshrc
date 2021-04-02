@@ -27,6 +27,7 @@ alias tls='tmux list-sessions'
 
 # git
 alias g='git'
+alias gb='git branch'
 alias gs='git status'
 alias gf='git fetch --all'
 alias gd='git diff'
@@ -76,17 +77,26 @@ precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
 setopt prompt_subst
 
+zstyle ':vcs_info:*' enable git
+# Checking for all changes is slower but without it
+# we cannot track unstaged changes.
 zstyle ':vcs_info:*' check-for-changes true
+# zstyle ':vcs_info:*' check-for-staged-changes true
 zstyle ':vcs_info:*' unstagedstr '%F{red}!%f'
 zstyle ':vcs_info:*' stagedstr '%F{green}+%f'
-zstyle ':vcs_info:git:*' formats '%b%u%c '
-zstyle ':vcs_info:git:*' actionformats '%a%u%c '
+zstyle ':vcs_info:git:*' formats '%F{blue}[%b]%f%u%c'
+zstyle ':vcs_info:git:*' actionformats '%F{blue}[%b|%a]%f%u%c'
 
 ## -------
 # Prompt
 ## -------
+# requires `brew install kube_ps1`
+# source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
 NEWLINE=$'\n'
-PROMPT="%F{green}%m%f %F{yellow}%~%f %F{blue}\$vcs_info_msg_0_%f %F{magenta}[%j]%f${NEWLINE}%# "
+PROMPT="%F{green}%m%f %F{yellow}%~%f "
+PROMPT+='${vcs_info_msg_0_} '
+# PROMPT+='$(kube_ps1) '
+PROMPT+="%F{magenta}[%j]%f${NEWLINE}%# "
 
 ## -------
 # Localrc
