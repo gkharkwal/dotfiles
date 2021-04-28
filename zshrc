@@ -32,6 +32,10 @@ alias gs='git status'
 alias gf='git fetch --all'
 alias gd='git diff'
 alias gl='git log --abbrev-commit --graph'
+function gnb () {
+    local remote_branch=`git for-each-ref --format='%(upstream:short)' "$(git symbolic-ref -q HEAD)"`
+    git checkout -b "${1}" -t "${remote_branch}"
+}
 
 ## --------
 # Functions
